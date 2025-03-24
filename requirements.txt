@@ -94,3 +94,25 @@ class ProcessM(QWidget):
 
         self.update_process_list()  # Initial Load
 
+    def update_process_list(self):
+        """Fetch and display system usage and processes"""
+        cpu_usage = int(psutil.cpu_percent())
+        memory_usage = int(psutil.virtual_memory().percent)
+
+        self.cpu_label.setText(f"🖥 CPU Usage: {cpu_usage}%")
+        self.memory_label.setText(f" Memory Usage: {memory_usage}%")
+
+        self.cpu_bar.setValue(cpu_usage)
+        self.memory_bar.setValue(memory_usage)
+
+        processes = list(psutil.process_iter(attrs=['pid', 'name', 'cpu_percent', 'memory_percent']))
+        self.process_table.setRowCount(len(processes))
+
+        for row, proc in enumerate(processes):
+            process_id =proc.info.get('pid','N/A')
+            self.process_table.setItem(row, 0, QTableWidgetItem(str(process_id)))
+            self.process_table.setItem(row, 1, QTableWidgetItem(proc.info['name']))
+            self.process_table.setItem(row, 2, QTableWidgetItem(f"{proc.info['cpu_percent']:.2f}%"))
+            self.process_table.setItem(row, 3, QTableWidgetItem(f"{proc.info['memory_percent']:.2f}%"))
+
+
