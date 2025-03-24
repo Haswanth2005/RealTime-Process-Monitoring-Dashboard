@@ -115,4 +115,17 @@ class ProcessM(QWidget):
             self.process_table.setItem(row, 2, QTableWidgetItem(f"{proc.info['cpu_percent']:.2f}%"))
             self.process_table.setItem(row, 3, QTableWidgetItem(f"{proc.info['memory_percent']:.2f}%"))
 
+#restarts in every 3sec gap
+    def start_monitoring(self):
+        self.timer.start(3000)
 
+    # Stop the auto-refresh
+    def stop_monitoring(self):
+        self.timer.stop()
+
+
+# Run the Application
+app = QApplication(sys.argv)
+window = ProcessM()
+window.show()
+sys.exit(app.exec())
