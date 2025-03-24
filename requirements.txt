@@ -1,2 +1,57 @@
-PyQt6>=6.4.0
-psutil>=5.9.0
+import psutil
+import sys
+
+from PyQt6.QtWidgets import (
+QApplication, QWidget, QVBoxLayout, QLabel, QPushButton,
+
+QTableWidget, QTableWidgetItem, QTabWidget, QProgressBar,
+QHBoxLayout)
+
+from PyQt6. QtCore import QTimer, Qt
+
+from PyQt6.QtGui import QFont
+
+
+
+class ProcessM(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        # Set window properties
+        self.setWindowTitle(" Monitoring dashboard ")
+        self.setGeometry(300, 300, 900, 500)
+        #background black
+        self.setStyleSheet(" background-color: #121212")
+
+        # Main Layout
+        main_layout = QVBoxLayout()
+
+        #ui part
+        self.tabs = QTabWidget()
+        main_layout.addWidget(self.tabs)
+
+        # System Usage Tab
+        self.usage_tab = QWidget()
+        self.usage_layout = QVBoxLayout()
+
+        self.cpu_label = QLabel("🖥️ CPU Usage: 0%")
+        self.memory_label = QLabel("💾 Memory Usage: 0%")
+
+        # Font Styling
+        self.cpu_label.setFont(QFont("Times New Roman", 13, QFont.Weight.Bold))
+        self.memory_label.setFont(QFont("Times New Roman", 13, QFont.Weight.Bold))
+
+        self.cpu_bar = QProgressBar()
+        self.memory_bar = QProgressBar()
+
+        self.cpu_bar.setFormat("%p% ⚡")
+        self.memory_bar.setFormat("%p% 🚀")
+
+        self.usage_layout.addWidget(self.cpu_label)
+        self.usage_layout.addWidget(self.cpu_bar)
+        self.usage_layout.addWidget(self.memory_label)
+        self.usage_layout.addWidget(self.memory_bar)
+        self.usage_tab.setLayout(self.usage_layout)
+        self.tabs.addTab(self.usage_tab, " System Usage")
+
+
