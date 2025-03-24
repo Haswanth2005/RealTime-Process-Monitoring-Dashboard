@@ -54,4 +54,43 @@ class ProcessM(QWidget):
         self.usage_tab.setLayout(self.usage_layout)
         self.tabs.addTab(self.usage_tab, " System Usage")
 
+        # Process List Tab
+        self.process_tab = QWidget()
+        self.process_table = QTableWidget()
+        self.process_layout = QVBoxLayout()
+        self.process_table.setColumnCount(4)
+        self.process_table.setHorizontalHeaderLabels(["Process ID", "Process Name ", "CPU", "Memory"])
+
+        self.process_table.setSortingEnabled(True)
+        self.process_layout.addWidget(self.process_table)
+        self.process_tab.setLayout(self.process_layout)
+
+        self.tabs.addTab(self.process_tab," Processes ")
+
+        # Control Buttons
+        self.button_layout = QHBoxLayout()
+        self.refresh_button = QPushButton("Refresh")
+        self.start_button = QPushButton("▶ Start Monitoring ")
+        self.stop_button = QPushButton("⏸ Stop Monitoring ")
+
+        self.refresh_button.clicked.connect(self.update_process_list)
+        self.start_button.clicked.connect(self.start_monitoring)
+        self.stop_button.clicked.connect(self.stop_monitoring)
+
+        self.button_layout.addWidget(self.refresh_button)
+        self.button_layout.addWidget(self.start_button)
+        self.button_layout.addWidget(self.stop_button)
+
+        main_layout.addLayout(self.button_layout)
+        self.setLayout(main_layout)
+
+        # Timer for Auto-Refresh
+        self.timer = QTimer(self)
+        #timeout.connect(self.update_process_list)
+        self.timer.timeout.connect(self.update_process_list)
+
+        #updates every 2 sec
+        self.timer.start(3000)
+
+        self.update_process_list()  # Initial Load
 
